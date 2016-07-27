@@ -6,7 +6,7 @@ class EpisodeController < ApplicationController
     episodes = []
 
     @schedule.each do |episode|
-      if (Time.zone.now.strftime("%FT%T%:z").to_time - 24.hours..Time.zone.now.strftime("%FT%T%:z")).cover?(episode['airstamp'])
+      if (Time.zone.now.strftime("%FT%T%:z").to_time - 1.hours..Time.zone.now.strftime("%FT%T%:z")).cover?(episode['airstamp'])
         episodes.push(episode['airstamp'] => time_ago_in_words(episode['airstamp']) + ' ago')
       end
     end
