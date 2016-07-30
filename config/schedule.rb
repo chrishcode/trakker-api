@@ -2,7 +2,7 @@
 #
 # It's helpful, but not entirely necessary to understand cron before proceeding.
 # http://en.wikipedia.org/wiki/Cron
-every 15.minute do
+every 1.day, :at => '12:00 am' do
   rake "schedule:fetch_new_episodes"
 end
 # Example:

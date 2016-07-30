@@ -1,16 +1,10 @@
 include ActionView::Helpers::DateHelper
 class EpisodeController < ApplicationController
   def index
-    @schedule = HTTP.get("http://api.tvmaze.com/schedule?country=US&date=" + Time.zone.now.strftime("%Y-%m-%d")).parse
+    @user_shows = [877053, 859341, 869934]
+    @schedule = Episode.where('episode_airstamp < ? AND episode_id IN (?)', Time.zone.now.strftime("%FT%T%:z"), @user_shows)
+                       .order(episode_airstamp: :desc)
 
-    episodes = []
-
-    @schedule.each do |episode|
-      if (Time.zone.now.strftime("%FT%T%:z").to_time - 1.hours..Time.zone.now.strftime("%FT%T%:z")).cover?(episode['airstamp'])
-        episodes.push(episode['airstamp'] => time_ago_in_words(episode['airstamp']) + ' ago')
-      end
-    end
-
-    render :json => episodes
+    render :json => @schedule
   end
 end
